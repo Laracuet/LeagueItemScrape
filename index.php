@@ -30,48 +30,52 @@
           		</div>
         	</div>
        </div>
+       <?php printDivs() ?>
      </body>
-     <!-- Start PHP Output -->
+     
+     <!-- Start PHP -->
      <?php
-     	$champAndItemCount = 0; 
-     	
-     	$tag='(<[^>]+>)';	# Tag 
-		$word='((?:[a-z][a-z]+))';	# Word 
-		$ws='(\\s+)';	# White Space 
-		$anyChar='(.)';	# Any Single Character 
-		$number='([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';	# Float
-		$result = '([\\s\\S]*)'; 
-		
-		$lolPatchUrl = 'http://lol-patch.com';
-		$lolPatchOutput = file_get_contents($lolPatchUrl); 
-		//echo file_get_contents($lolPatchUrl); //debugging
-				
-		$allDivsPattern = "/<div class='one_fourth type_item'>([\\s\\S]*)/"; 
-		
-		if (preg_match_all ($allDivsPattern, $lolPatchOutput, $dataMatches)){
-			$champAndItemDivs = $dataMatches[1][0]; 
-			//echo $value; //debugging
-		}
-		else 
-			echo "404?"; //debugging
-		
-		$divArray = explode("</div>", $champAndItemDivs);
-		
-		foreach($divArray as $div) {
-			//$namePattern = "/<option value=\"(\\d+)\">([\\s\\S]*):([\\s\\S]*)/"; 
+     
+     	function printDivs(){
+	     	$champAndItemCount = 0; 
+	     	
+	     	$tag='(<[^>]+>)';	# Tag 
+			$word='((?:[a-z][a-z]+))';	# Word 
+			$ws='(\\s+)';	# White Space 
+			$anyChar='(.)';	# Any Single Character 
+			$number='([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';	# Float
+			$result = '([\\s\\S]*)'; 
 			
-			//$classPattern =  "//";
+			$lolPatchUrl = 'http://lol-patch.com';
+			$lolPatchOutput = file_get_contents($lolPatchUrl); 
+			//echo file_get_contents($lolPatchUrl); //debugging
+					
+			$allDivsPattern = "/<div class='one_fourth type_item'>([\\s\\S]*)/is"; 
 			
-			/*if (preg_match_all ($classPattern, $div, $classMatches)){
-				$class = $classMAtches[1][0]; 
-				echo $class; 
+			if (preg_match_all ($allDivsPattern, $lolPatchOutput, $dataMatches)){
+				$champAndItemDivs = $dataMatches[1][0]; 
+				//echo $value; //debugging
 			}
-			else {*/ 
-				$champAndItemCount++; 
-				echo "#$champAndItemCount: $div<br />"; 
-			//} 
+			else 
+				echo "404?"; //debugging
+			
+			$divArray = explode("</div>", $champAndItemDivs);
+			
+			foreach($divArray as $div) {
+				$champAndItemCount++;
+				echo "#$champAndItemCount: $div</div>"; 
+				
+				$classPattern = "/<div class='([\\s\\S]*)'>/"; 
+				
+				if (preg_match_all ($classPattern, $div, $classMatches)){
+					$class = $classMatches[1][0]; 
+					echo $class;
+				}
+				else 
+					echo "BOOOOO"; 
+
+			}
 		}
-		
 		
 	
 	?>
