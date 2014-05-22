@@ -69,7 +69,7 @@
 			else {*/ 
 				$champAndItemCount++; 
 				echo "#$champAndItemCount: $div<br />"; 
-			//}
+			//} 
 		}
 		
 		
